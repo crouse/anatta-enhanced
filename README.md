@@ -1,0 +1,2 @@
+# Anatta
+> For management
