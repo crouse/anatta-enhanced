@@ -103,10 +103,13 @@ private slots:
 
     void on_toolButton_2_clicked();
 
+    void on_pushButtonInitDb_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString serverIp;
     QSqlDatabase db;
+    QSqlDatabase dbinit;
     QSqlTableModel *model;
     QSqlTableModel *modelFemale;
 

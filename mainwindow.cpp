@@ -3,6 +3,8 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDateTime>
+#include <QFile>
+#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -172,7 +174,7 @@ void MainWindow::on_actionDb_triggered()
         return;
     }
     qDebug() << "set Model";
-
+    ui->actionDb->setDisabled(true);
     setModel(model, "zen_male", ui->tableView);
     setModel(modelFemale, "zen_female", ui->tableViewFemale);
 }
@@ -1117,6 +1119,12 @@ void MainWindow::on_toolButton_2_clicked()
 
 void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageHeight)
 {
+    /* Get can be printed images */
+    QStringList canBePrintedImageList;
+    QSqlQuery query("select receipt, name from zen_male where mark = 1 order by id");
+    while(query.next()) {
+        canBePrintedImageList.append(query.value(0).toString());
+    }
     QChar separator = QDir::separator();
     QString savePath = saveFilePath;
     QFont font;
@@ -1194,4 +1202,70 @@ void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
     delete pdfPainter;
     delete pdfWriter;
     //
+}
+
+
+static bool portTest(QString ip, int port)
+{
+    /* Func: 端口测试 */
+    bool ret;
+    QTcpSocket tsock;
+    tsock.connectToHost(ip, port);
+    ret = tsock.waitForConnected(1000);
+    if (ret) tsock.close();
+    return ret;
+}
+
+void MainWindow::on_pushButtonInitDb_clicked()
+{
+    /* Func: 数据库初始化 */
+    qInfo() << "Init mysql database";
+    QString ip = ui->lineEditInitIp->text().trimmed();
+    QString user = ui->lineEditInitDbUser->text().trimmed();
+    QString pass = ui->lineEditInitDbPassword->text().trimmed();
+
+    if (user.isEmpty() || pass.isEmpty()) {
+        qInfo() << "Username or password is empty";
+        QMessageBox::critical(this, "", "数据库用户名或者密码没输入");
+        return;
+    }
+
+    if (ip.isEmpty()) ip = "127.0.0.1";
+    if (!portTest(ip, 3306)) {
+        qFatal("Mysql server not installed or port is not open");
+        QMessageBox::information(this, "", "数据库没有开放3306端口，或者压根就没安装啦!");
+        return;
+    }
+
+    dbinit = QSqlDatabase::addDatabase("QMYSQL");
+    dbinit.setHostName(ip);
+    dbinit.setUserName(user);
+    dbinit.setPassword(pass);
+
+    if(!dbinit.open()) {
+        QMessageBox::critical(this, "数据库错误", dbinit.lastError().text());
+        qInfo() << "Can not open database" << dbinit.lastError().text();
+        return;
+    }
+
+    QSqlQuery query(dbinit);
+    QFile sqlFile(":/sql");
+    sqlFile.open(QIODevice::ReadOnly);
+    QTextStream in(&sqlFile);
+    QString text = in.readAll();
+    QStringList list = text.split(";");
+
+    foreach (QString str, list) {
+        QString sql = str.replace("\n", "");
+        if (str.isEmpty()) continue;
+        query.exec(sql);
+    }
+
+    sqlFile.close();
+
+    qInfo() << "Clear username and password lineEdits";
+
+    ui->lineEditInitDbUser->clear();
+    ui->lineEditInitDbPassword->clear();
+    ui->lineEditInitIp->clear();
 }

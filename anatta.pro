@@ -26,4 +26,5 @@ RESOURCES += \
     pics.qrc
 
 DISTFILES += \
-    pics/pdf.png
+    pics/pdf.png \
+    init.sql

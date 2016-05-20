@@ -27,7 +27,7 @@
        <enum>QTabWidget::South</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>6</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -57,267 +57,6 @@
        <attribute name="title">
         <string>设置</string>
        </attribute>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>260</y>
-          <width>501</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="font">
-            <font>
-             <pointsize>11</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>照片存放路径：</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditImagePath"/>
-         </item>
-         <item>
-          <widget class="QToolButton" name="toolButtonImagePath">
-           <property name="text">
-            <string>证件照路径</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>230</y>
-          <width>501</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="font">
-            <font>
-             <pointsize>11</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 102, 102);
-border-radius:4px;</string>
-           </property>
-           <property name="text">
-            <string> 法会信息：</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditFahui_name">
-           <property name="placeholderText">
-            <string>法会名称</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditLastMaleCode">
-           <property name="placeholderText">
-            <string>上次男众最大皈依号</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditLastFemaleCode">
-           <property name="placeholderText">
-            <string>上次女众最大皈依号</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="toolButton">
-           <property name="text">
-            <string>保存</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>290</y>
-          <width>501</width>
-          <height>28</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="font">
-            <font>
-             <pointsize>11</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>数据备份路径：</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditBackPath"/>
-         </item>
-         <item>
-          <widget class="QToolButton" name="toolButtonBackPath">
-           <property name="text">
-            <string>数据备份路径</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>170</y>
-          <width>447</width>
-          <height>48</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>注意：法会信息要提前设定，主要是为了皈依证号的生成，所以千万不能写错</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>           照片存放路径是RSYNC服务的文件夹，默认是家路径下的 RsyncShare</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QLabel" name="label_10">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>50</y>
-          <width>251</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>11</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 102, 102);
-border-radius:4px;</string>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <property name="text">
-         <string>1. 清理数据库，非管理员勿动！！！输入密码方可</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_11">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>130</y>
-          <width>81</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>11</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 102, 102);
-border-radius:4px;</string>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <property name="text">
-         <string>2. 设置法会信息</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_12">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>10</y>
-          <width>181</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>11</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 102, 102);
-border-radius:4px;</string>
-        </property>
-        <property name="text">
-         <string>↑. 先点击左上方按钮，连接数据库</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>80</y>
-          <width>235</width>
-          <height>33</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QLineEdit" name="lineEditTruncateTable"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonTruncateTable">
-           <property name="font">
-            <font>
-             <pointsize>11</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>清理数据库</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
        <widget class="QLabel" name="labelInitStat">
         <property name="geometry">
          <rect>
@@ -339,127 +78,339 @@ border-radius:4px;</string>
          <string/>
         </property>
        </widget>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>10</y>
+          <width>539</width>
+          <height>361</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>法会信息设置：</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <widget class="QLabel" name="label_12">
+           <property name="font">
+            <font>
+             <pointsize>11</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="text">
+            <string>↑. 先点击左上方按钮，连接数据库</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_10">
+           <property name="font">
+            <font>
+             <pointsize>11</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <property name="text">
+            <string>1. 清理数据库，非管理员勿动！！！输入密码方可</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QLineEdit" name="lineEditTruncateTable">
+             <property name="placeholderText">
+              <string>请输入清楚数据库表格的关键字才可以：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonTruncateTable">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>清理数据库</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>注意：法会信息要提前设定，主要是为了皈依证号的生成，所以千万不能写错</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>           照片存放路径是RSYNC服务的文件夹，默认是家路径下的 RsyncShare</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+             </property>
+             <property name="text">
+              <string> 法会信息：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditFahui_name">
+             <property name="placeholderText">
+              <string>法会名称</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditLastMaleCode">
+             <property name="placeholderText">
+              <string>上次男众最大皈依号</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditLastFemaleCode">
+             <property name="placeholderText">
+              <string>上次女众最大皈依号</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButton">
+             <property name="text">
+              <string>保存</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>照片存放路径：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditImagePath"/>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonImagePath">
+             <property name="text">
+              <string>证件照路径</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_11">
+           <property name="font">
+            <font>
+             <pointsize>11</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <property name="text">
+            <string>2. 设置法会信息</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>数据备份路径：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditBackPath"/>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonBackPath">
+             <property name="text">
+              <string>数据备份路径</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab">
        <attribute name="title">
         <string>打印</string>
        </attribute>
-       <widget class="QLabel" name="label_8">
+       <widget class="QGroupBox" name="groupBox_2">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>40</y>
-          <width>381</width>
-          <height>16</height>
+          <x>260</x>
+          <y>90</y>
+          <width>412</width>
+          <height>181</height>
          </rect>
         </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
+        <property name="title">
+         <string>打印信息导出：</string>
         </property>
-        <property name="text">
-         <string>注意：已打印数据不要重复打印，请每次打印20的倍数最佳</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>100</y>
-          <width>363</width>
-          <height>36</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
-          <widget class="QComboBox" name="comboBox">
+          <widget class="QLabel" name="label_8">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 204, 102);</string>
+           </property>
+           <property name="text">
+            <string>注意：已打印数据不要重复打印，请每次打印20的倍数最佳</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>建议每次记录打印的始末，避免重复打印，重复制证，少制证</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
-            <property name="text">
-             <string>男</string>
-            </property>
+            <widget class="QComboBox" name="comboBox">
+             <item>
+              <property name="text">
+               <string>男</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>女</string>
+              </property>
+             </item>
+            </widget>
            </item>
            <item>
-            <property name="text">
-             <string>女</string>
-            </property>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>从第</string>
+             </property>
+            </widget>
            </item>
-          </widget>
+           <item>
+            <widget class="QSpinBox" name="spinBoxFrom">
+             <property name="value">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>到</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinBoxTo">
+             <property name="value">
+              <number>20</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="text">
+              <string>导出打印文件</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>从第</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="spinBoxFrom">
-           <property name="value">
-            <number>1</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>到</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="spinBoxTo">
-           <property name="value">
-            <number>20</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton">
-           <property name="text">
-            <string>导出打印文件</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QLabel" name="label_9">
-        <property name="geometry">
-         <rect>
-          <x>50</x>
-          <y>70</y>
-          <width>391</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>建议每次记录打印的始末，避免重复打印，重复制证，少制证</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>150</y>
-          <width>408</width>
-          <height>32</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
-         <item>
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="text">
-            <string>打印现有照片，不会重复打印(未实现)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioButton">
-           <property name="text">
-            <string>是否打印到最后</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="text">
+              <string>打印现有照片，不会重复打印(未实现)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="radioButton">
+             <property name="text">
+              <string>是否打印到最后</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -473,82 +424,75 @@ border-radius:4px;</string>
        <attribute name="title">
         <string>初始化系统</string>
        </attribute>
-       <widget class="QLabel" name="label_13">
+       <widget class="QGroupBox" name="groupBox">
         <property name="geometry">
          <rect>
-          <x>40</x>
-          <y>20</y>
-          <width>351</width>
-          <height>16</height>
+          <x>380</x>
+          <y>70</y>
+          <width>181</width>
+          <height>191</height>
          </rect>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>11</pointsize>
-          <weight>75</weight>
-          <italic>true</italic>
-          <bold>true</bold>
-          <underline>false</underline>
-         </font>
+        <property name="title">
+         <string>数据库初始化：</string>
         </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 0);</string>
-        </property>
-        <property name="text">
-         <string>贤二，不懂不要乱用哦，这个是服务器初始化部分，目前不能用，哈哈</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>280</y>
-          <width>561</width>
-          <height>33</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QLabel" name="label_15">
+          <widget class="QLabel" name="label_13">
            <property name="font">
             <font>
-             <pointsize>11</pointsize>
+             <pointsize>12</pointsize>
              <weight>75</weight>
+             <italic>false</italic>
              <bold>true</bold>
+             <underline>false</underline>
             </font>
            </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 0);</string>
+           </property>
            <property name="text">
-            <string>数据库密码</string>
+            <string>  数据库使用的是 MYSQL</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditInitDbUser"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_14">
-           <property name="font">
-            <font>
-             <pointsize>11</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>数据库用户名</string>
+          <widget class="QLineEdit" name="lineEditInitIp">
+           <property name="placeholderText">
+            <string> 初始化的数据库IP地址</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditInitDbPassword"/>
+          <widget class="QLineEdit" name="lineEditInitDbUser">
+           <property name="placeholderText">
+            <string> 初始化的数据库用户名</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEditInitDbPassword">
+           <property name="inputMethodHints">
+            <set>Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::PasswordEchoOnEdit</enum>
+           </property>
+           <property name="placeholderText">
+            <string> 初始化的数据库密码</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButtonInitDb">
            <property name="font">
             <font>
              <pointsize>11</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
+             <weight>50</weight>
+             <bold>false</bold>
             </font>
            </property>
            <property name="text">
@@ -592,8 +536,13 @@ border-radius:4px;</string>
       </widget>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
-        <string>照片PDFS</string>
+        <string>帮助</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QTextBrowser" name="textBrowser"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

@@ -7,5 +7,6 @@
         <file>pics/see.png</file>
         <file>pics/excel.png</file>
         <file>pics/pdf.png</file>
+        <file alias="sql">init.sql</file>
     </qresource>
 </RCC>
