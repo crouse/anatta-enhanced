@@ -8,5 +8,6 @@
         <file>pics/excel.png</file>
         <file>pics/pdf.png</file>
         <file alias="sql">init.sql</file>
+        <file>help.html</file>
     </qresource>
 </RCC>

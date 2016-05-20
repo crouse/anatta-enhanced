@@ -50,6 +50,8 @@ MainWindow::MainWindow(QWidget *parent) :
     setPaths();
     ui->spinBoxFrom->setRange(0, 2000);
     ui->spinBoxTo->setRange(1, 2000);
+
+    showHelp();
 }
 
 MainWindow::~MainWindow()
@@ -1268,4 +1270,14 @@ void MainWindow::on_pushButtonInitDb_clicked()
     ui->lineEditInitDbUser->clear();
     ui->lineEditInitDbPassword->clear();
     ui->lineEditInitIp->clear();
+}
+
+void MainWindow::showHelp()
+{
+    QFile help(":/help.html");
+    help.open(QIODevice::ReadOnly);
+    QTextStream in(&help);
+    QString text = in.readAll();
+    help.close();
+    ui->textBrowserHelp->setHtml(text);
 }

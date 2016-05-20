@@ -52,6 +52,7 @@ public:
     void createCert(QString fileName, QSqlTableModel *mod, QString filter, QString pixmapPath);
 
     int getImages();
+    void showHelp();
 
     QLineEdit *lineEditSearch;
     QLineEdit *lineEditConfig;

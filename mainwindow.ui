@@ -540,7 +540,7 @@ border-radius:4px;</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
-         <widget class="QTextBrowser" name="textBrowser"/>
+         <widget class="QTextBrowser" name="textBrowserHelp"/>
         </item>
        </layout>
       </widget>
