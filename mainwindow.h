@@ -51,6 +51,7 @@ public:
     void exportExcel(QString fileName, QSqlTableModel *mod);
     void createCard(QString fileName, QSqlTableModel *mod, QString filter, QString pixmapPath);
 
+    void testIfAdmin();
     int getImages();
     void showHelp();
     void refreshStat();

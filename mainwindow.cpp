@@ -67,6 +67,7 @@ void MainWindow::on_actionSetting_triggered()
 bool MainWindow::databaseTest()
 {
     serverIp = lineEditConfig->text().trimmed();
+    qDebug() << "databaseTest" << serverIp;
     bool ret;
     QTcpSocket tsock;
     tsock.connectToHost(serverIp, 3306);
@@ -166,6 +167,7 @@ void MainWindow::setModel(QSqlTableModel *mod, QString tableName, QTableView *vi
 
 void MainWindow::on_actionDb_triggered()
 {
+    testIfAdmin();
     bool conStatus = databaseTest();
     if (conStatus == false) {
         QMessageBox::critical(this, "", "请设置正确的数据库地址以及端口.");
@@ -1492,4 +1494,17 @@ void MainWindow::exportAllPics()
 void MainWindow::on_toolButtonPics_clicked()
 {
     exportAllPics();
+}
+
+void MainWindow::testIfAdmin()
+{
+    QString IP = lineEditConfig->text().trimmed();
+    if (IP.startsWith("127.") || IP.endsWith(".8")) {
+        qInfo() << "user use 127 as serverIp means you are admin, so got all privileges.";
+        return;
+    }
+
+    ui->tabConfig->setDisabled(true);
+    ui->tab->setDisabled(true);
+    ui->tab_4->setDisabled(true);
 }
