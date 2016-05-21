@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1017</width>
-    <height>516</height>
+    <height>539</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
        <enum>QTabWidget::South</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>2</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -327,10 +327,11 @@ border-radius:4px;</string>
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 204, 102);</string>
+            <string notr="true">background-color: rgb(255, 204, 102);
+border-radius:4px;</string>
            </property>
            <property name="text">
-            <string>注意：已打印数据不要重复打印，请每次打印20的倍数最佳</string>
+            <string> 注意：已打印数据不要重复打印，请每次打印20的倍数最佳</string>
            </property>
           </widget>
          </item>
@@ -399,12 +400,12 @@ border-radius:4px;</string>
            <item>
             <widget class="QPushButton" name="pushButton_2">
              <property name="text">
-              <string>打印现有照片，不会重复打印(未实现)</string>
+              <string>打印现有照片，不会重复打印</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="radioButton">
+            <widget class="QRadioButton" name="radioButtonIfPrintToEnd">
              <property name="text">
               <string>是否打印到最后</string>
              </property>
@@ -419,6 +420,139 @@ border-radius:4px;</string>
        <attribute name="title">
         <string>统计信息</string>
        </attribute>
+       <widget class="QGroupBox" name="groupBox_4">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>90</y>
+          <width>201</width>
+          <height>221</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>人数统计：</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="man">
+           <property name="styleSheet">
+            <string notr="true">border-radius:4px;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="sum">
+           <property name="styleSheet">
+            <string notr="true">border-radius:4px;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="jingwai">
+           <property name="styleSheet">
+            <string notr="true">border-radius:4px;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_15">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="text">
+            <string> 北京人数：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="woman">
+           <property name="styleSheet">
+            <string notr="true">border-radius:4px;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_19">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="text">
+            <string> 男众人数：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_20">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="text">
+            <string> 女众人数：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="beijing">
+           <property name="styleSheet">
+            <string notr="true">border-radius:4px;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_14">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="text">
+            <string> 总共人数：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_17">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="text">
+            <string> 京外人数：</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QToolButton" name="refreshView">
+        <property name="geometry">
+         <rect>
+          <x>920</x>
+          <y>370</y>
+          <width>56</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>刷新显示</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -428,7 +562,7 @@ border-radius:4px;</string>
         <property name="geometry">
          <rect>
           <x>380</x>
-          <y>70</y>
+          <y>110</y>
           <width>181</width>
           <height>191</height>
          </rect>
@@ -502,36 +636,55 @@ border-radius:4px;</string>
          </item>
         </layout>
        </widget>
+       <widget class="QLabel" name="label_18">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>70</y>
+          <width>221</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>初始化数据库环境系统管理员用！！！</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
         <string>导入数据到小组系统</string>
        </attribute>
-       <widget class="QToolButton" name="toolButton_2">
+       <widget class="QGroupBox" name="groupBox_6">
         <property name="geometry">
          <rect>
-          <x>390</x>
-          <y>200</y>
-          <width>241</width>
-          <height>22</height>
+          <x>410</x>
+          <y>150</y>
+          <width>186</width>
+          <height>100</height>
          </rect>
         </property>
-        <property name="text">
-         <string>把皈依数据导入到小组填写系统</string>
+        <property name="title">
+         <string>数据库导入到小组录入表：</string>
         </property>
-       </widget>
-       <widget class="QLabel" name="label_16">
-        <property name="geometry">
-         <rect>
-          <x>390</x>
-          <y>170</y>
-          <width>251</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>皈依结束后执行以下命令， 避免重复执行</string>
-        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_16">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);</string>
+           </property>
+           <property name="text">
+            <string> 皈依结束后执行以下命令</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QToolButton" name="toolButton_2">
+           <property name="text">
+            <string>把皈依数据导入到小组填写系统</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_5">

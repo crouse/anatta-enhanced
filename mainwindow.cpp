@@ -42,8 +42,8 @@ MainWindow::MainWindow(QWidget *parent) :
         lineEditEditor->setFixedSize(100, 20);
         lineEditEditor->setStyleSheet("border-radius: 5px; background: yellow");
         lineEditEditor->setPlaceholderText(" 编辑人必填");
-        //connect(lineEditEditor, SIGNAL(returnPressed()), this, SLOT(afterLineEditorEditorPressed()));
         ui->mainToolBar->addWidget(lineEditEditor);
+        connect(lineEditEditor, SIGNAL(returnPressed()), this, SLOT(afterQueryPresshed()));
     }
 
     currentDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
@@ -236,73 +236,6 @@ void MainWindow::on_actionExportPersonalInfo_triggered()
 void MainWindow::on_actionPrintPersonnelCredentials_triggered()
 {
     // export pdf format personnel info
-}
-
-void MainWindow::createCert(QString fileName, QSqlTableModel *mod, QString filter, QString pixmapPath)
-{
-    QFile pdfFile(fileName);
-    pdfFile.open(QIODevice::WriteOnly);
-
-    QPdfWriter *pdfWriter = new QPdfWriter(&pdfFile);
-    pdfWriter->setPageMargins(QMarginsF(0, 0, 0, 0));
-    pdfWriter->setPageSize(QPagedPaintDevice::A5);
-    pdfWriter->setPageOrientation(QPageLayout::Landscape);
-
-    QPainter *pdfPainter = new QPainter(pdfWriter);
-
-    //pdfPainter->setPen(Qt::blue);
-    //pdfPainter->drawRect(0, 0, 9600, 13700);
-
-    /*
-    int middle = 4800;
-    int width = 9600;
-    int height = 13700;
-
-    float margin = 268.6274;
-    float mheight = 3022.0588;
-    float mwidth = 4531.38;
-    float oneCm = 671.5686;
-    float cellHeight = 352.3641;
-    float label = mheight / 3.0 * 2;
-
-    QRectF *rec[8];
-
-    for(int j = 0; j < 2; j++) {
-        for(int i = 0; i < 4; i++) {
-            int m;
-            j == 0? m = i: m = i+4;
-            qDebug() << m << j;
-            rec[m] = new QRectF;
-            rec[m]->setRect((4800 + margin) * j, mheight * i + margin * i * 2, mwidth, mheight);
-        }
-    }
-
-    for(int i = 0; i < 8; i++) {
-        qDebug() << rec[i]->width() << rec[i]->height() << rec[i]->x() << rec[i]->y();
-        pdfPainter->drawRect(rec[i]->x(), rec[i]->y(), rec[i]->width(), rec[i]->height());
-        int x = rec[i]->x() + 1.5 * oneCm;
-        pdfPainter->drawLine(x, rec[i]->y(), x, rec[i]->y() + rec[i]->height());
-
-        for(int j = 0; j < 9; j++) {
-            //pdfPainter->drawText(QPointF(x + (j + 1) * cellHeight, rec[i]->y()), QString("*"));
-            QPointF p1(x + (j+1) * cellHeight, rec[i]->y());
-            QPointF p2(x + (j+1) * cellHeight, rec[i]->y() + rec[i]->height());
-            pdfPainter->drawText(QPointF(x + (j + 1) * cellHeight, rec[i]->y()), QString("*"));
-            pdfPainter->drawLine(p1, p2);
-        }
-
-        QPoint pa(rec[i]->x(), rec[i]->y() + label);
-        QPoint pb(rec[i]->x() + rec[i]->width(), rec[i]->y() + label);
-        pdfPainter->drawLine(pa, pb);
-    }
-    */
-
-    pdfWriter->newPage();
-    pdfPainter->end();
-    pdfFile.close();
-
-    delete pdfPainter;
-    delete pdfWriter;
 }
 
 void MainWindow::createCard(QString fileName, QSqlTableModel *mod, QString filter, QString pixmapPath)
@@ -654,7 +587,6 @@ void MainWindow::on_toolButtonBackPath_clicked()
 void MainWindow::on_actionCard_triggered()
 {
     createCard("/Users/quqinglei/Desktop/hello.pdf", model, "", "");
-    createCert("/Users/quqinglei/Desktop/cert.pdf", model, "", "");
 }
 
 void MainWindow::exportExcel(QString fileName, QSqlTableModel *mod)
@@ -1096,6 +1028,7 @@ void MainWindow::makePhotos(QString imagePath, QString savePath, int imageWidth,
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    /* 生成打印的照片文件*/
     int readyToPrintedCnt = getImages();
     qInfo() << "photo can be printed cnt: " << readyToPrintedCnt;
     foreach(const QString &str, canPrinted) {
@@ -1103,7 +1036,7 @@ void MainWindow::on_pushButton_2_clicked()
     }
     qDebug() << imageFilePath;
 
-    // makePhotos();
+    makePrintedPhotos(imageFilePath, 1050, 1470);
 }
 
 void MainWindow::on_toolButton_2_clicked()
@@ -1121,12 +1054,70 @@ void MainWindow::on_toolButton_2_clicked()
 
 void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageHeight)
 {
-    /* Get can be printed images */
-    QStringList canBePrintedImageList;
-    QSqlQuery query("select receipt, name from zen_male where mark = 1 order by id");
+    /* 1. 获取已经拍照的列表 */
+    bool isChecked; // true: 全部打印 false: 只打印56张的倍数
+    QStringList hasBeenTaken;
+    QSqlQuery query("(select receipt, name from zen_male where mark = 1 order by id) "
+                    " union (select receipt, name from zen_female where mark = 1 order by id)");
+
     while(query.next()) {
-        canBePrintedImageList.append(query.value(0).toString());
+        hasBeenTaken.append(query.value(0).toString());
     }
+
+    /* 2. 获取已经通过 RSYNC 传递过来的图片文件 */
+    int imagesCnt;
+    QDir dir(imagePath);
+    if (!dir.exists()) {
+        return;
+    }
+
+    dir.setFilter(QDir::Files| QDir::NoSymLinks);
+    QStringList filters;
+    filters << QString("*.png");
+    dir.setNameFilters(filters);
+    imagesCnt = dir.count();
+    qInfo() << "imagesCnt=" << imagesCnt;
+    if (imagesCnt <= 0) return;
+
+    isChecked = ui->radioButtonIfPrintToEnd->isChecked();
+
+    /* 3. 获取可以打印的照片列表 = 已传过来 且 mark = 1 的 */
+    int index;
+    QStringList canBePrint;
+    for(int i = 0; i < imagesCnt; i++) {
+        QString fileName = dir[i];
+        fileName = fileName.section(".", 0, 0);
+        index = hasBeenTaken.indexOf(fileName);
+        if (index >= 0) {
+            canBePrint.append(fileName);
+            qDebug() << QString("canBePrinted: %1").arg(fileName);
+        }
+    }
+
+    /* 4. 准备打印文件 */
+    int canBePrintCnt = canBePrint.count();
+
+    if (canBePrintCnt <= 0) {
+        QString info = QString("现在没有需要打印的文件");
+        qInfo() << info;
+        QMessageBox::information(this, "", info);
+        return;
+    }
+
+    if (!isChecked) { // 如果不打印到最后，只是按最优的打印方式
+        if (canBePrintCnt < 56) {
+            QString info = QString("目前可打印的照片数量为: %1，目前打印模式为省纸模式。"
+                                   " 当且仅当照片数量大于56时才会打印。").arg(canBePrintCnt);
+            qInfo() << info;
+            QMessageBox::information(this, "", info);
+            return;
+        }
+        canBePrintCnt = canBePrintCnt - canBePrintCnt % 56;
+    }
+
+    qInfo() << "目前可以打印的照片数量为:" << canBePrintCnt << "张。";
+
+    /* 5. 准备打印成PDF文件 */
     QChar separator = QDir::separator();
     QString savePath = saveFilePath;
     QFont font;
@@ -1158,22 +1149,19 @@ void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
         }
     }
 
-    int imagesCnt;
-    QDir dir(imagePath);
-    if (!dir.exists()) {
-        return;
-    }
-    dir.setFilter(QDir::Files| QDir::NoSymLinks);
-    QStringList filters;
-    filters << QString("*.jpeg") << QString("*.png") << QString("jpg");
-    dir.setNameFilters(filters);
-    imagesCnt = dir.count();
-    if (imagesCnt <= 0) {
-        return;
+#ifndef MAX_IMAGES_CNT
+#define MAX_IMAGES_CNT 5000
+#endif
+    int i = 0;
+    QString fileNameArray[MAX_IMAGES_CNT];
+    foreach (QString str, canBePrint) {
+        if (i > canBePrintCnt) break;
+        fileNameArray[i] = str;
+        i++;
     }
 
     int cnt = 0;
-    for (int m = 0; m < imagesCnt; m += 56) {
+    for (int m = 0; m < canBePrintCnt; m += 56) {
         pdfPainter->drawRect(rect);
         for (int j = 1; j < 7; j++) {
             pdfPainter->drawLine(QPointF(0, j*hs), QPointF(width, j*hs));
@@ -1185,27 +1173,35 @@ void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
 
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 7; j++) {
-                if (cnt >= imagesCnt) break;
-                QPixmap pixmap(imagePath + separator + dir[cnt]);
+                if (cnt >= canBePrintCnt) break;
+                QPixmap pixmap(imagePath + separator + fileNameArray[cnt] + ".png");
                 pdfPainter->drawPixmap(points[i][j].rx(), points[i][j].ry(), imageWidth, imageHeight, pixmap);
-                pdfPainter->drawText(QRect(points[i][j].rx(), points[i][j].ry() + imageHeight, 2000, 300), dir[cnt].section('.', 0, 0));
-                qDebug() << dir[cnt];
+                pdfPainter->drawText(QRect(points[i][j].rx(), points[i][j].ry() + imageHeight, 2000, 300), fileNameArray[cnt]);
                 cnt++;
             }
         }
-        if (imagesCnt - cnt > 0) {
+        if (canBePrintCnt - cnt > 0) {
             pdfWriter->newPage();
         }
     }
 
     pdfPainter->end();
     pdfFile.close();
-
     delete pdfPainter;
     delete pdfWriter;
-    //
-}
 
+    /* 6. 更新数据库，设置已经打印的标记为 2 */
+    for(int i = 0; i < canBePrintCnt; i++) {
+        QString sql;
+        if (fileNameArray[i].startsWith("A")) {
+            sql = QString("update zen_male set mark = 2 where receipt = '%1'").arg(fileNameArray[i]);
+        } else {
+            sql = QString("update zen_female set mark = 2 where receipt = '%1'").arg(fileNameArray[i]);
+        }
+        query.exec(sql);
+        qDebug() << sql;
+    }
+}
 
 static bool portTest(QString ip, int port)
 {
@@ -1280,4 +1276,82 @@ void MainWindow::showHelp()
     QString text = in.readAll();
     help.close();
     ui->textBrowserHelp->setHtml(text);
+}
+
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    qDebug() << "Current tab index: " << index;
+    switch(index) {
+    case 0:
+        qDebug() << "0 tab";
+        break;
+    case 1:
+        qDebug() << "1 tab";
+        break;
+    case 2:
+        qDebug() << "2 tab";
+        break;
+    case 3:
+        qDebug() << "update statics";
+        refreshStat();
+        break;
+    case 4:
+        qDebug() << "4 tab";
+        break;
+    case 5:
+        qDebug() << "5 tab";
+        break;
+    case 6:
+        qDebug() << "6 tab";
+        break;
+    default:
+        break;
+    }
+}
+
+void MainWindow::refreshStat()
+{
+    QSqlQuery query;
+    QString male_cnt;
+    QString female_cnt;
+    QString beijing_cnt;
+    // male count
+    query.exec("select count(id) as male_cnt from zen_male");
+    while (query.next()) {
+        male_cnt = query.value(0).toString();
+        ui->man->setText(male_cnt);
+    }
+
+    // female count
+    query.exec("select count(id) as female_cnt from zen_female");
+    while (query.next()) {
+        female_cnt = query.value(0).toString();
+        ui->woman->setText(female_cnt);
+    }
+
+    QString sum = QString("%1").arg(male_cnt.toInt() + female_cnt.toInt());
+    ui->sum->setText(sum);
+
+    query.exec("select count(id) as beijing_cnt from "
+               "((select * from zen_male) union (select * from zen_female)) a "
+               "where province like '%北京%'");
+
+    qDebug() << query.lastQuery();
+    while (query.next()) {
+        beijing_cnt = query.value(0).toString();
+        ui->beijing->setText(beijing_cnt);
+    }
+    QString jingwai_cnt = QString("%1").arg(sum.toInt() - beijing_cnt.toInt());
+    ui->jingwai->setText(jingwai_cnt);
+}
+
+void MainWindow::on_refreshView_clicked()
+{
+    // 调用刷新统计信息函数
+    refreshStat();
+}
+
+void MainWindow::afterQueryPresshed()
+{
+    qDebug() << "afterQueryPresshed";
 }

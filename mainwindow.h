@@ -49,10 +49,10 @@ public:
     void savePrintPdfs(int gender, int from, int to); // 0: male, 1: female
     void exportExcel(QString fileName, QSqlTableModel *mod);
     void createCard(QString fileName, QSqlTableModel *mod, QString filter, QString pixmapPath);
-    void createCert(QString fileName, QSqlTableModel *mod, QString filter, QString pixmapPath);
 
     int getImages();
     void showHelp();
+    void refreshStat();
 
     QLineEdit *lineEditSearch;
     QLineEdit *lineEditConfig;
@@ -67,6 +67,7 @@ public:
     QStringList canPrinted;
 
 private slots:
+    void afterQueryPresshed();
     void on_actionSetting_triggered();
 
     void on_actionDb_triggered();
@@ -105,6 +106,10 @@ private slots:
     void on_toolButton_2_clicked();
 
     void on_pushButtonInitDb_clicked();
+
+    void on_tabWidget_currentChanged(int index);
+
+    void on_refreshView_clicked();
 
 private:
     Ui::MainWindow *ui;
