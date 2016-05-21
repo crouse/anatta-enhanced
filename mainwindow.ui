@@ -807,15 +807,6 @@ border-radius:4px;</string>
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>Tool</string>
-    </property>
-    <addaction name="actionSetting"/>
-    <addaction name="actionExportPdf"/>
-    <addaction name="action"/>
-    <addaction name="actionCard"/>
-   </widget>
    <widget class="QMenu" name="menu">
     <property name="tearOffEnabled">
      <bool>false</bool>
@@ -829,7 +820,6 @@ border-radius:4px;</string>
      <string>FILE</string>
     </property>
    </widget>
-   <addaction name="menuFile"/>
    <addaction name="menu"/>
    <addaction name="menuFILE"/>
   </widget>
