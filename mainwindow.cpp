@@ -1504,7 +1504,11 @@ void MainWindow::testIfAdmin()
         return;
     }
 
+    ui->actionExportPdf->setDisabled(true);
+    ui->actionPdf->setDisabled(true);
+    ui->actionExcel->setDisabled(true);
     ui->tabConfig->setDisabled(true);
     ui->tab->setDisabled(true);
     ui->tab_4->setDisabled(true);
+    ui->tabConfig->setHidden(true);
 }
