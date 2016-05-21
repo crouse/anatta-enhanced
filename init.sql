@@ -1,7 +1,11 @@
 CREATE DATABASE IF NOT EXISTS citta;
-GRANT ALL PRIVILEGES ON citta'%' IDENTIFIED BY 'attic';
+GRANT ALL PRIVILEGES ON citta.* to citta@'%' IDENTIFIED BY 'attic';
 FLUSH PRIVILEGES;
 USE citta;
+
+CREATE DATABASE IF NOT EXISTS connect;
+GRANT ALL PRIVILEGES ON connect.* to connect@'%' IDENTIFIED BY 'connect';
+FLUSH PRIVILEGES;
 
 CREATE TABLE IF NOT EXISTS `zen_config` (
   `fahui_name` varchar(45) NOT NULL COMMENT '此次法会名称',
@@ -67,7 +71,8 @@ CREATE TABLE IF NOT EXISTS `zen_male` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-CREATE TABLE IF NOT EXISTS `lei.zen_female` (
+
+CREATE TABLE IF NOT EXISTS `zen_female` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `receipt` varchar(32) DEFAULT NULL COMMENT '收据号',
   `name` varchar(32) DEFAULT NULL COMMENT '姓名',

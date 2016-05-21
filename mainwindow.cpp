@@ -48,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->spinBoxFrom->setRange(0, 2000);
     ui->spinBoxTo->setRange(1, 2000);
 
+    maleStart = 0;
+    femaleStart = 0;
+
     showHelp();
 }
 
@@ -731,12 +734,12 @@ void MainWindow::exportExcel(QString fileName, QSqlTableModel *mod)
     xlsx.saveAs(fileName);
 }
 
-void MainWindow::on_actionExcel_triggered()
+void MainWindow::exportAllExcels()
 {
     QDateTime time = QDateTime::currentDateTime();
     QString currentDate = time.toString("yyyy-MM-dd");
     QString savePath;
-    if (ui->lineEditBackPath->text().isEmpty()) {
+    if (ui->lineEditBackPath->text().trimmed().isEmpty()) {
         savePath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     } else {
         savePath = ui->lineEditBackPath->text();
@@ -746,12 +749,12 @@ void MainWindow::on_actionExcel_triggered()
     exportExcel(QString("%1/女众-%2.xlsx").arg(savePath).arg(currentDate), modelFemale);
 }
 
-void MainWindow::on_actionPdf_triggered()
+void MainWindow::exportAllPdfs()
 {
     QDateTime time = QDateTime::currentDateTime();
     QString currentDate = time.toString("yyyy-MM-dd");
     QString savePath;
-    if (ui->lineEditBackPath->text().isEmpty()) {
+    if (ui->lineEditBackPath->text().trimmed().isEmpty()) {
         savePath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     } else {
         savePath = ui->lineEditBackPath->text();
@@ -761,6 +764,16 @@ void MainWindow::on_actionPdf_triggered()
     savePdfs(QString("%1/女众-%2.pdf").arg(saveFilePath).arg(currentDate), modelFemale, "");
 }
 
+void MainWindow::on_actionExcel_triggered()
+{
+    exportAllExcels();
+}
+
+void MainWindow::on_actionPdf_triggered()
+{
+    exportAllPdfs();
+}
+
 void MainWindow::on_toolButton_clicked()
 {
     QSqlQuery query;
@@ -768,6 +781,10 @@ void MainWindow::on_toolButton_clicked()
     fahui_name = ui->lineEditFahui_name->text();
     last_male_code = ui->lineEditLastMaleCode->text();
     last_female_code = ui->lineEditLastFemaleCode->text();
+
+    maleStart = last_male_code.toInt();
+    femaleStart = last_female_code.toInt();
+
     QString currentDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
 
     sql = QString("replace into zen_config (`fahui_name`, `last_male_code`, `last_female_code`, `date`) values ('%1', '%2', '%3', '%4')")
@@ -802,6 +819,9 @@ void MainWindow::setFahuiInfo()
     ui->lineEditFahui_name->setText(fahui_name);
     ui->lineEditLastMaleCode->setText(last_male_code);
     ui->lineEditLastFemaleCode->setText(last_female_code);
+
+    maleStart = last_male_code.toInt();
+    femaleStart = last_female_code.toInt();
 }
 
 void MainWindow::setPaths()
@@ -1397,4 +1417,79 @@ void MainWindow::on_refreshView_clicked()
 void MainWindow::afterQueryPresshed()
 {
     qDebug() << "afterQueryPresshed";
+}
+
+/* export guiyi data */
+void MainWindow::on_toolButtonExcel_clicked()
+{
+    exportAllExcels();
+}
+
+void MainWindow::on_toolButtonPdf_clicked()
+{
+    exportAllPdfs();
+}
+
+void MainWindow::exportAllPics()
+{
+    QString imagePath = ui->lineEditImagePath->text().trimmed(); // 原始照片存放路径
+
+    // export images
+    QString savePath;
+    if (ui->lineEditBackPath->text().trimmed().isEmpty()) {
+        savePath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    } else {
+        savePath = ui->lineEditBackPath->text();
+    }
+
+    QString exportImageAbsPath = QString("%1/images.%2/").arg(savePath).arg(currentDate);
+    qDebug() << exportImageAbsPath;
+    QDir *tmp = new QDir;
+    if (!tmp->exists(exportImageAbsPath)) {
+        tmp->mkpath(exportImageAbsPath);
+        qInfo() << "mkpath" << exportImageAbsPath;
+    }
+
+    int imagesCnt;
+    QDir dir(imagePath);
+    if (!dir.exists()) {
+        QString info;
+        info = QString("路径:  %1 没发现有照片").arg(savePath);
+        QMessageBox::critical(this, "", info);
+        return;
+    }
+
+    dir.setFilter(QDir::Files| QDir::NoSymLinks);
+    QStringList filters;
+    filters << QString("*.png");
+    dir.setNameFilters(filters);
+    imagesCnt = dir.count();
+    qInfo() << "imagesCnt=" << imagesCnt;
+    qInfo() << "src:" << imagePath << "dst:" << exportImageAbsPath;
+
+    qDebug() << "male start:" << maleStart << "female start:" << femaleStart;
+
+    for(int i = 0; i < imagesCnt; i++) {
+        QString oriName = dir[i];
+        QChar c = oriName.toUpper()[0];
+        int currentNum = oriName.mid(1, 4).toInt();
+        QString fileName;
+        if (c == 'A') {
+            fileName.sprintf("A%010d.png", maleStart + currentNum);
+        } else if (c == 'B') {
+            fileName.sprintf("B%010d.png", femaleStart + currentNum);
+        } else {
+            qInfo() << "file wrong: " << oriName;
+            continue;
+        }
+
+        QString srcFile = QString("%1/%2").arg(imagePath).arg(dir[i]);
+        QString dstFile = QString("%1/%2").arg(exportImageAbsPath).arg(fileName);
+        QFile::copy(srcFile, dstFile);
+    }
+}
+
+void MainWindow::on_toolButtonPics_clicked()
+{
+    exportAllPics();
 }

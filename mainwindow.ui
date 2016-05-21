@@ -27,7 +27,7 @@
        <enum>QTabWidget::South</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -418,7 +418,7 @@ border-radius:4px;</string>
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
-        <string>统计信息</string>
+        <string>统计</string>
        </attribute>
        <widget class="QGroupBox" name="groupBox_4">
         <property name="geometry">
@@ -556,7 +556,7 @@ border-radius:4px;</string>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
-        <string>初始化系统</string>
+        <string>初始</string>
        </attribute>
        <widget class="QGroupBox" name="groupBox">
         <property name="geometry">
@@ -652,25 +652,35 @@ border-radius:4px;</string>
       </widget>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
-        <string>导入数据到小组系统</string>
+        <string>尾声</string>
        </attribute>
        <widget class="QGroupBox" name="groupBox_6">
         <property name="geometry">
          <rect>
-          <x>410</x>
+          <x>380</x>
           <y>150</y>
           <width>186</width>
           <height>100</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用来把皈依的数据导入到学佛小组录入的表格里，从而可以使用另外一个软件。如果点击完下面的按钮，且已经进行学佛小组录入，请不要重复点击。因为每一次就会初始化学佛小组的数据。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="title">
          <string>数据库导入到小组录入表：</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
           <widget class="QLabel" name="label_16">
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 102, 102);</string>
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
            </property>
            <property name="text">
             <string> 皈依结束后执行以下命令</string>
@@ -681,6 +691,93 @@ border-radius:4px;</string>
           <widget class="QToolButton" name="toolButton_2">
            <property name="text">
             <string>把皈依数据导入到小组填写系统</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>80</y>
+          <width>159</width>
+          <height>218</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>导出皈依信息：</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <item>
+          <widget class="QLabel" name="label_21">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="text">
+            <string> 导出皈依 EXCEL 文件</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="toolButtonExcel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>EXCEL</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_22">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="text">
+            <string> 导出皈依 PDF 文件</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="toolButtonPdf">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>PDF</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_23">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 102, 102);
+border-radius:4px;</string>
+           </property>
+           <property name="text">
+            <string> 导出照片打包文件</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="toolButtonPics">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>照片</string>
            </property>
           </widget>
          </item>
@@ -737,6 +834,9 @@ border-radius:4px;</string>
    <addaction name="menuFILE"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -769,7 +869,7 @@ border-radius:4px;</string>
      <normaloff>:/pics/db.png</normaloff>:/pics/db.png</iconset>
    </property>
    <property name="text">
-    <string>db</string>
+    <string>连接</string>
    </property>
   </action>
   <action name="actionRefresh">
@@ -778,7 +878,7 @@ border-radius:4px;</string>
      <normaloff>:/pics/see.png</normaloff>:/pics/see.png</iconset>
    </property>
    <property name="text">
-    <string>refresh</string>
+    <string>查询</string>
    </property>
   </action>
   <action name="action">
@@ -810,7 +910,7 @@ border-radius:4px;</string>
      <normaloff>:/pics/excel.png</normaloff>:/pics/excel.png</iconset>
    </property>
    <property name="text">
-    <string>excel</string>
+    <string>EXCEL</string>
    </property>
   </action>
   <action name="actionPdf">
@@ -819,7 +919,7 @@ border-radius:4px;</string>
      <normaloff>:/pics/pdf.png</normaloff>:/pics/pdf.png</iconset>
    </property>
    <property name="text">
-    <string>pdf</string>
+    <string>PDF</string>
    </property>
   </action>
  </widget>

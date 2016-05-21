@@ -55,6 +55,10 @@ public:
     void showHelp();
     void refreshStat();
 
+    void exportAllExcels();
+    void exportAllPdfs();
+    void exportAllPics();
+
     QLineEdit *lineEditSearch;
     QLineEdit *lineEditConfig;
     QLineEdit *lineEditEditor;
@@ -66,6 +70,9 @@ public:
     QString currentDate;
 
     QStringList canPrinted;
+
+    int maleStart;
+    int femaleStart;
 
 private slots:
     void afterQueryPresshed();
@@ -111,6 +118,12 @@ private slots:
     void on_tabWidget_currentChanged(int index);
 
     void on_refreshView_clicked();
+
+    void on_toolButtonExcel_clicked();
+
+    void on_toolButtonPdf_clicked();
+
+    void on_toolButtonPics_clicked();
 
 private:
     Ui::MainWindow *ui;
