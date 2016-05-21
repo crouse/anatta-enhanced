@@ -11,15 +11,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    // serverIp = "192.168.1.5";
     serverIp = "127.0.0.1";
 
     {
         lineEditSearch = new QLineEdit;
         lineEditSearch->setFixedSize(200, 20);
         lineEditSearch->setStyleSheet("border-radius: 5px;");
-        lineEditSearch->setPlaceholderText(" 查询 <ENTER>");
-        //connect(lineEditSearch, SIGNAL(returnPressed()), this, SLOT(searchInfo()));
+        lineEditSearch->setPlaceholderText(" 查询");
         ui->mainToolBar->addWidget(lineEditSearch);
     }
 
@@ -31,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
         lineEditConfig->setStyleSheet("border-radius: 5px;");
         lineEditConfig->setPlaceholderText("服务器地址");
         lineEditConfig->setText(serverIp);
-        //connect(lineEditConfig, SIGNAL(returnPressed()), this, SLOT(setServerAddr()));
         ui->mainToolBar->addWidget(lineEditConfig);
     }
 
@@ -41,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
         lineEditEditor = new QLineEdit;
         lineEditEditor->setFixedSize(100, 20);
         lineEditEditor->setStyleSheet("border-radius: 5px; background: yellow");
-        lineEditEditor->setPlaceholderText(" 编辑人必填");
+        lineEditEditor->setPlaceholderText(" 管理员必填");
         ui->mainToolBar->addWidget(lineEditEditor);
         connect(lineEditEditor, SIGNAL(returnPressed()), this, SLOT(afterQueryPresshed()));
     }
@@ -61,6 +58,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionSetting_triggered()
 {
+    ;
 }
 
 bool MainWindow::databaseTest()
@@ -181,8 +179,53 @@ void MainWindow::on_actionDb_triggered()
     setModel(modelFemale, "zen_female", ui->tableViewFemale);
 }
 
+bool MainWindow::searchInfo(QString search)
+{
+    // 支持手环编号、手机号以及姓名的查询
+    if (search.startsWith("A")) {
+        model->setFilter(QString(" receipt = '%1'").arg(search));
+        model->select();
+        ui->tableView->reset();
+    } else if (search.startsWith("B")) {
+        modelFemale->setFilter(QString(" receipt = '%1'").arg(search));
+        modelFemale->select();
+        ui->tableViewFemale->reset();
+    } else if (search.startsWith("1")) {
+        QString sql = QString(" phone_num = '%1'").arg(search);
+        model->setFilter(sql);
+        model->select();
+        ui->tableView->reset();
+
+        modelFemale->setFilter(sql);
+        modelFemale->select();
+        ui->tableViewFemale->reset();
+    } else {
+        QString sql = QString(" name = '%1'").arg(search);
+        model->setFilter(sql);
+        model->select();
+        ui->tableView->reset();
+
+        modelFemale->setFilter(sql);
+        modelFemale->select();
+        ui->tableViewFemale->reset();
+    }
+
+    return true;
+}
+
 void MainWindow::on_actionRefresh_triggered()
 {
+    model->setFilter("");
+    modelFemale->setFilter("");
+
+    QString search = lineEditSearch->text().trimmed();
+    qDebug() << "search [" << search << "]";
+    if (!search.isEmpty()) {
+        qInfo() << "searching for: " << search;
+        searchInfo(search);
+        return;
+    }
+
     model->select();
     ui->tableView->reset();
 
