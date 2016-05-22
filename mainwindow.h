@@ -39,6 +39,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool databaseTest();
+    void getLocalAddr();
+    void insertAdminInfo();
     bool searchInfo(QString search);
     bool connectDatabase();
     void setFahuiInfo();
@@ -51,7 +53,7 @@ public:
     void exportExcel(QString fileName, QSqlTableModel *mod);
     void createCard(QString fileName, QSqlTableModel *mod, QString filter, QString pixmapPath);
 
-    void testIfAdmin();
+    bool testIfAdmin();
     int getImages();
     void showHelp();
     void refreshStat();
@@ -71,6 +73,7 @@ public:
     QString currentDate;
 
     QStringList canPrinted;
+    QString localAddr;
 
     int maleStart;
     int femaleStart;

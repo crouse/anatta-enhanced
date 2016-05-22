@@ -15,6 +15,12 @@ CREATE TABLE IF NOT EXISTS `zen_config` (
   PRIMARY KEY (`fahui_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `zen_admin` (
+  `name` varchar(45) NOT NULL COMMENT '管理员姓名',
+  `ipaddr` varchar(32) NOT NULL COMMENT '管理员的IP地址',
+  `signtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录写入时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `zen_male` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `receipt` varchar(32) DEFAULT NULL COMMENT '收据号',

@@ -27,7 +27,7 @@
        <enum>QTabWidget::South</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -423,9 +423,9 @@ border-radius:4px;</string>
        <widget class="QGroupBox" name="groupBox_4">
         <property name="geometry">
          <rect>
-          <x>390</x>
-          <y>90</y>
-          <width>201</width>
+          <x>400</x>
+          <y>80</y>
+          <width>151</width>
           <height>221</height>
          </rect>
         </property>
@@ -649,6 +649,26 @@ border-radius:4px;</string>
          <string>初始化数据库环境系统管理员用！！！</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QWidget" name="tabAdmin">
+       <attribute name="title">
+        <string>管理</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QTableView" name="tableViewAdmin">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tableViewBC"/>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">

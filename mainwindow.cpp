@@ -5,6 +5,8 @@
 #include <QDateTime>
 #include <QFile>
 #include <QTextStream>
+#include <QHostAddress>
+#include <QNetworkInterface>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -73,6 +75,7 @@ bool MainWindow::databaseTest()
     tsock.connectToHost(serverIp, 3306);
     ret = tsock.waitForConnected(1000);
     if (ret) tsock.close();
+    getLocalAddr();
     return ret;
 }
 
@@ -167,7 +170,11 @@ void MainWindow::setModel(QSqlTableModel *mod, QString tableName, QTableView *vi
 
 void MainWindow::on_actionDb_triggered()
 {
-    testIfAdmin();
+    if(!testIfAdmin()) {
+        qDebug() << "testIfAdmin test not pass, maybe not input admin name";
+        return;
+    }
+
     bool conStatus = databaseTest();
     if (conStatus == false) {
         QMessageBox::critical(this, "", "请设置正确的数据库地址以及端口.");
@@ -182,6 +189,9 @@ void MainWindow::on_actionDb_triggered()
     ui->actionDb->setDisabled(true);
     setModel(model, "zen_male", ui->tableView);
     setModel(modelFemale, "zen_female", ui->tableViewFemale);
+    insertAdminInfo();
+    lineEditEditor->setDisabled(true);
+    lineEditConfig->setDisabled(true);
 }
 
 bool MainWindow::searchInfo(QString search)
@@ -204,6 +214,17 @@ bool MainWindow::searchInfo(QString search)
         modelFemale->setFilter(sql);
         modelFemale->select();
         ui->tableViewFemale->reset();
+    } else if (search.startsWith("sql:")) {
+        QString sql = search.section(":", 1);
+        qDebug() << "searchInfo:" << sql;
+        model->setFilter(sql);
+        model->select();
+        ui->tableView->reset();
+
+        modelFemale->setFilter(sql);
+        modelFemale->select();
+        ui->tableViewFemale->reset();
+
     } else {
         QString sql = QString(" name = '%1'").arg(search);
         model->setFilter(sql);
@@ -1322,6 +1343,7 @@ void MainWindow::on_pushButtonInitDb_clicked()
         QString sql = str.replace("\n", "");
         if (str.isEmpty()) continue;
         query.exec(sql);
+        qDebug() << query.lastError().text();
     }
 
     sqlFile.close();
@@ -1496,12 +1518,19 @@ void MainWindow::on_toolButtonPics_clicked()
     exportAllPics();
 }
 
-void MainWindow::testIfAdmin()
+bool MainWindow::testIfAdmin()
 {
+    QString adminName = lineEditEditor->text().trimmed();
+    if (adminName.isEmpty()) {
+        qInfo() << "管理员必填选项没有填写";
+        QMessageBox::critical(this, "", "管理员必填处请输入自己的名字");
+        return false;
+    }
+
     QString IP = lineEditConfig->text().trimmed();
-    if (IP.startsWith("127.") || IP.endsWith(".8")) {
-        qInfo() << "user use 127 as serverIp means you are admin, so got all privileges.";
-        return;
+    /* IP ends num < 9 got all privileges */
+    if (IP.section(".", -1).toInt() < 9) {
+        return true;
     }
 
     ui->actionExportPdf->setDisabled(true);
@@ -1511,4 +1540,33 @@ void MainWindow::testIfAdmin()
     ui->tab->setDisabled(true);
     ui->tab_4->setDisabled(true);
     ui->tabConfig->setHidden(true);
+    return true;
+}
+
+void MainWindow::getLocalAddr()
+{
+    QList<QHostAddress> list = QNetworkInterface::allAddresses();
+
+    for(int i = 0; i < list.count(); i++) {
+        if(!list[i].isLoopback())
+            if (list[i].protocol() == QAbstractSocket::IPv4Protocol ) {
+                QString ip = list[i].toString();
+                qDebug() << ip;
+                if (ip.startsWith("192.168")) {
+                    localAddr = ip;
+                }
+            }
+    }
+
+    if (lineEditConfig->text().trimmed().startsWith("127")) {
+        qDebug() << "getLocalAddr" << lineEditConfig->text().trimmed();
+        localAddr = "127.0.0.1";
+    }
+}
+
+void MainWindow::insertAdminInfo()
+{
+    QSqlQuery query;
+    QString sql = QString("insert into zen_admin (name, ipaddr) values ('%1', '%2')").arg(lineEditEditor->text().trimmed(), localAddr);
+    qDebug() << "insertAdminInfo: " << sql << query.lastError().text();
 }
