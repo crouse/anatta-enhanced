@@ -22,6 +22,7 @@
 #include <QPen>
 #include <QDate>
 #include <QStringList>
+#include <QSqlQueryModel>
 #include "xlsxdocument.h"
 #define DB_NAME "citta"
 #define DB_PASS "attic"
@@ -61,6 +62,7 @@ public:
     void exportAllExcels();
     void exportAllPdfs();
     void exportAllPics();
+    void initAdminPage();
 
     QLineEdit *lineEditSearch;
     QLineEdit *lineEditConfig;
@@ -129,6 +131,10 @@ private slots:
 
     void on_toolButtonPics_clicked();
 
+    void on_tabWidget_tabBarDoubleClicked(int index);
+
+    void on_pushButtonFee_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString serverIp;
@@ -136,7 +142,10 @@ private:
     QSqlDatabase dbinit;
     QSqlTableModel *model;
     QSqlTableModel *modelFemale;
-
+    QSqlQueryModel *modelAdmin;
+    QSqlQueryModel *modelCitta;
+    QSqlQueryModel *modelBrowser;
+    int fee;
 };
 
 #endif // MAINWINDOW_H

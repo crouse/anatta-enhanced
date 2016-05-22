@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     serverIp = "127.0.0.1";
+    fee = ui->lineEditFee->text().trimmed().toInt();
 
     {
         lineEditSearch = new QLineEdit;
@@ -54,11 +55,38 @@ MainWindow::MainWindow(QWidget *parent) :
     femaleStart = 0;
 
     showHelp();
+
+    modelAdmin = new QSqlQueryModel;
+    modelCitta = new QSqlQueryModel;
+    modelBrowser = new QSqlQueryModel;
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::initAdminPage()
+{
+    modelAdmin->setQuery(QString("select name, ipaddr, signtime from zen_admin where signtime > '%1' ").arg(currentDate));
+    modelAdmin->setHeaderData(0, Qt::Horizontal, tr("管理员"));
+    modelAdmin->setHeaderData(1, Qt::Horizontal, tr("IP"));
+    modelAdmin->setHeaderData(2, Qt::Horizontal, tr("登陆时间"));
+    ui->tableViewAdmin->setModel(modelAdmin);
+    ui->tableViewAdmin->show();
+
+    modelCitta->setQuery(
+                QString(
+                " select editor, count(id) as cnt, count(id) * %1 as money from ( "
+                " (select id, editor from zen_male) union all (select id, editor from zen_female) ) a "
+                " group by editor order by cnt desc"
+                    ).arg(fee)
+                    );
+    modelCitta->setHeaderData(0, Qt::Horizontal, tr("收费义工"));
+    modelCitta->setHeaderData(1, Qt::Horizontal, tr("收费个数"));
+    modelCitta->setHeaderData(2, Qt::Horizontal, tr("收费元"));
+    ui->tableViewCitta->setModel(modelCitta);
+    ui->tableViewCitta->show();
 }
 
 void MainWindow::on_actionSetting_triggered()
@@ -93,6 +121,9 @@ bool MainWindow::connectDatabase()
     }
 
     setFahuiInfo();
+
+    fee = ui->lineEditFee->text().trimmed().toInt();
+    initAdminPage();
 
     return true;
 }
@@ -1009,7 +1040,7 @@ int MainWindow::getImages()
 {
     canPrinted.clear();
     QSqlQuery query;
-    QString sql = QString("select receipt from zen_male where mark = 1 union select receipt from zen_female where mark = 1");
+    QString sql = QString("select receipt from zen_male where mark = 1 union all select receipt from zen_female where mark = 1");
     query.exec(sql);
     int cnt = 0;
     while(query.next()) {
@@ -1027,7 +1058,7 @@ void MainWindow::makePhotos(QString imagePath, QString savePath, int imageWidth,
 
     // Get images and test if sync to server
     QSqlQuery query;
-    QString sql = QString("select receipt from zen_male where mark = 1 union select receipt from zen_female where mark = 1");
+    QString sql = QString("select receipt from zen_male where mark = 1 union all select receipt from zen_female where mark = 1");
     query.exec(sql);
     int cnt = 0;
 
@@ -1144,7 +1175,7 @@ void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
     bool isChecked; // true: 全部打印 false: 只打印56张的倍数
     QStringList hasBeenTaken;
     QSqlQuery query("(select receipt, name from zen_male where mark = 1 order by id) "
-                    " union (select receipt, name from zen_female where mark = 1 order by id)");
+                    " union all (select receipt, name from zen_female where mark = 1 order by id)");
 
     while(query.next()) {
         hasBeenTaken.append(query.value(0).toString());
@@ -1420,7 +1451,7 @@ void MainWindow::refreshStat()
     ui->sum->setText(sum);
 
     query.exec("select count(id) as beijing_cnt from "
-               "((select * from zen_male) union (select * from zen_female)) a "
+               "((select * from zen_male) union all (select * from zen_female)) a "
                "where province like '%北京%'");
 
     qDebug() << query.lastQuery();
@@ -1569,4 +1600,24 @@ void MainWindow::insertAdminInfo()
     QSqlQuery query;
     QString sql = QString("insert into zen_admin (name, ipaddr) values ('%1', '%2')").arg(lineEditEditor->text().trimmed(), localAddr);
     qDebug() << "insertAdminInfo: " << sql << query.lastError().text();
+}
+
+void MainWindow::on_tabWidget_tabBarDoubleClicked(int index)
+{
+    qDebug() << "tab:" << index;
+    switch(index) {
+    case 5:
+        initAdminPage();
+        qDebug() << "initAdminPage";
+        break;
+    default:
+        break;
+    }
+}
+
+void MainWindow::on_pushButtonFee_clicked()
+{
+    fee = ui->lineEditFee->text().trimmed().toInt();
+    qDebug() << "Fee = " << fee;
+    ui->lineEditFee->setDisabled(true);
 }
