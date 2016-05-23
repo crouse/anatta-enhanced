@@ -973,7 +973,10 @@ border-radius:4px;</string>
   </action>
   <action name="actionExportPersonalInfo">
    <property name="text">
-    <string>导出个人信息</string>
+    <string>个人信息</string>
+   </property>
+   <property name="toolTip">
+    <string>个人信息</string>
    </property>
   </action>
   <action name="actionPrintPersonnelCredentials">

@@ -312,11 +312,12 @@ void MainWindow::on_tableView_customContextMenuRequested(const QPoint &pos) // m
     qDebug() << db_id << receipt;
     qDebug() << sth;
 
+    pReceipt = receipt;
     QMenu *popMenu = new QMenu(this);
     popMenu->addAction(ui->actionExportPersonalInfo);
-    popMenu->addAction(ui->actionPrintPersonnelCredentials);
     popMenu->exec(QCursor::pos());
 
+    pReceipt = "";
     delete popMenu;
 }
 
@@ -328,20 +329,28 @@ void MainWindow::on_tableViewFemale_customContextMenuRequested(const QPoint &pos
     int db_id = modelFemale->index(rowNum, 0).data().toInt();
     QString receipt = modelFemale->index(rowNum, 1).data().toString();
     QString sth = modelFemale->index(rowNum, colNum).data().toString();
-    qDebug() << db_id << receipt;
+    qDebug() << "customContexMenuRequest" << db_id << receipt;
     qDebug() << sth;
 
+    pReceipt = receipt;
     QMenu *popMenu = new QMenu(this);
     popMenu->addAction(ui->actionExportPersonalInfo);
-    popMenu->addAction(ui->actionPrintPersonnelCredentials);
     popMenu->exec(QCursor::pos());
 
+    pReceipt = "";
     delete popMenu;
 }
 
 void MainWindow::on_actionExportPersonalInfo_triggered()
 {
     // export excel format personnel info
+    QString tableName;
+    QChar gender = pReceipt[0];
+    if (gender == QChar('A'))
+        tableName = "zen_male";
+    else
+        tableName = "zen_female";
+    qDebug() << tableName;
 }
 
 void MainWindow::on_actionPrintPersonnelCredentials_triggered()

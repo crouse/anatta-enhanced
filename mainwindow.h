@@ -76,6 +76,7 @@ public:
 
     QStringList canPrinted;
     QString localAddr;
+    QString pReceipt;
 
     int maleStart;
     int femaleStart;
