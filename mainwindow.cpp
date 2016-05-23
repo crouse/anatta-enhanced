@@ -77,16 +77,27 @@ void MainWindow::initAdminPage()
 
     modelCitta->setQuery(
                 QString(
-                " select editor, count(id) as cnt, count(id) * %1 as money from ( "
-                " (select id, editor from zen_male) union all (select id, editor from zen_female) ) a "
-                " group by editor order by cnt desc"
+                    " SELECT  editor, ipaddress, COUNT(id) AS cnt, COUNT(id) * %1 AS money FROM "
+                    " ((SELECT  id, editor, ipaddress FROM zen_male) UNION ALL (SELECT  id, editor, ipaddress FROM zen_female)) a "
+                    " GROUP BY editor , ipaddress ORDER BY editor "
                     ).arg(fee)
                     );
     modelCitta->setHeaderData(0, Qt::Horizontal, tr("收费义工"));
-    modelCitta->setHeaderData(1, Qt::Horizontal, tr("收费个数"));
-    modelCitta->setHeaderData(2, Qt::Horizontal, tr("收费元"));
+    modelCitta->setHeaderData(1, Qt::Horizontal, tr("IP"));
+    modelCitta->setHeaderData(2, Qt::Horizontal, tr("收费个数"));
+    modelCitta->setHeaderData(3, Qt::Horizontal, tr("收费元"));
     ui->tableViewCitta->setModel(modelCitta);
     ui->tableViewCitta->show();
+
+    modelBrowser->setQuery(
+                QString(" SELECT  others, notes as ip, COUNT(id) AS cnt FROM "
+                        " ((SELECT  id, others, notes FROM zen_male) UNION ALL ( SELECT  id, others, notes FROM zen_female)) a "
+                        " GROUP BY others , notes  ORDER BY others "));
+    modelBrowser->setHeaderData(0, Qt::Horizontal, tr("录入义工"));
+    modelBrowser->setHeaderData(1, Qt::Horizontal, tr("IP"));
+    modelBrowser->setHeaderData(2, Qt::Horizontal, tr("录入个数"));
+    ui->tableViewBrowser->setModel(modelBrowser);
+    ui->tableViewBrowser->show();
 }
 
 void MainWindow::on_actionSetting_triggered()
@@ -1417,6 +1428,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         qDebug() << "4 tab";
         break;
     case 5:
+        // admin page
+        initAdminPage();
         qDebug() << "5 tab";
         break;
     case 6:
@@ -1599,6 +1612,7 @@ void MainWindow::insertAdminInfo()
 {
     QSqlQuery query;
     QString sql = QString("insert into zen_admin (name, ipaddr) values ('%1', '%2')").arg(lineEditEditor->text().trimmed(), localAddr);
+    query.exec(sql);
     qDebug() << "insertAdminInfo: " << sql << query.lastError().text();
 }
 
