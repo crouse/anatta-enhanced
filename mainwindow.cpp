@@ -1073,7 +1073,12 @@ void MainWindow::on_pushButtonTruncateTable_clicked()
    if(passcode == inputPasscode) {
        qDebug() << "clean table";
        QSqlQuery query;
-       query.exec("truncate zen_male; truncate zen_female; truncate zen_config;");
+       QString trunc = QString("truncate zen_print_info; truncate zen_print_images; truncate zen_config; "
+                  "truncate zen_admin; " "truncate zen_male; " "truncate zen_female; ");
+       query.exec(trunc);
+
+       qDebug() << query.lastQuery() << query.lastError().text();
+
 
        // delete images
        QDir dir(imageFilePath);
@@ -1250,7 +1255,10 @@ bool MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
     dir.setNameFilters(filters);
     imagesCnt = dir.count();
     qInfo() << "imagesCnt=" << imagesCnt;
-    if (imagesCnt <= 0) return false;
+    if (imagesCnt <= 0) {
+        QMessageBox::information(this, "", QString("%1 路径未发现有照片，请确保RSYNC 服务开启可用").arg(imagePath));
+        return false;
+    }
 
     isChecked = ui->radioButtonIfPrintToEnd->isChecked();
 
@@ -1271,7 +1279,7 @@ bool MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
     int canBePrintCnt = canBePrint.count();
 
     if (canBePrintCnt <= 0) {
-        QString info = QString("现在没有需要打印的文件");
+        QString info = QString("现在没有可以打印的文件");
         qInfo() << info;
         QMessageBox::information(this, "", info);
         return false;
