@@ -59,6 +59,8 @@ MainWindow::MainWindow(QWidget *parent) :
     modelAdmin = new QSqlQueryModel;
     modelCitta = new QSqlQueryModel;
     modelBrowser = new QSqlQueryModel;
+    modelInfo = new QSqlQueryModel;
+    modelImages = new QSqlQueryModel;
 }
 
 MainWindow::~MainWindow()
@@ -98,6 +100,36 @@ void MainWindow::initAdminPage()
     modelBrowser->setHeaderData(2, Qt::Horizontal, tr("录入个数"));
     ui->tableViewBrowser->setModel(modelBrowser);
     ui->tableViewBrowser->show();
+}
+
+/*
+  CREATE TABLE IF NOT EXISTS `zen_print_images` (
+  `name` varchar(45) NOT NULL COMMENT '管理员姓名',
+  `array` text NOT NULL COMMENT '打印的内容',
+  `signtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录写入时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+*/
+
+
+void MainWindow::initPrintPage()
+{
+    modelInfo->setQuery("select name, gender, start, end, signtime from zen_print_info order by signtime");
+    modelInfo->setHeaderData(0, Qt::Horizontal, tr("管理员"));
+    modelInfo->setHeaderData(1, Qt::Horizontal, tr("导出信息的性别"));
+    modelInfo->setHeaderData(2, Qt::Horizontal, tr("打印起始"));
+    modelInfo->setHeaderData(3, Qt::Horizontal, tr("打印结束"));
+    modelInfo->setHeaderData(4, Qt::Horizontal, tr("打印时间"));
+    ui->tableViewPrintInfo->setModel(modelInfo);
+    ui->tableViewPrintInfo->horizontalHeader()->setStretchLastSection(true);
+    ui->tableViewPrintInfo->show();
+
+    modelImages->setQuery("select name, signtime, array from zen_print_images order by signtime");
+    modelImages->setHeaderData(0, Qt::Horizontal, tr("管理员"));
+    modelImages->setHeaderData(1, Qt::Horizontal, tr("打印时间"));
+    modelImages->setHeaderData(2, Qt::Horizontal, tr("已打印照片的收据号序列"));
+    ui->tableViewPrintImages->setModel(modelImages);
+    ui->tableViewPrintImages->horizontalHeader()->setStretchLastSection(true);
+    ui->tableViewPrintImages->show();
 }
 
 void MainWindow::on_actionSetting_triggered()
@@ -988,7 +1020,7 @@ void MainWindow::savePrintPdfs(int gender, int from, int to) // gender 0 male, 1
         painter->drawText(QRect(6950, height + 200, 1500, 620), q.value(10).toString()); // address
         painter->drawText(QRect(8550, height + 200, 1200, 300), q.value(11).toString()); // code
 
-        if (cnt % 20 == 0) {
+        if (cnt % 20 == 0 && (to - from + 1) != cnt) {
             painter->drawLine(QPoint(0, height + 640), QPoint(10000, height + 640));
             writer->newPage();
 
@@ -1189,7 +1221,7 @@ void MainWindow::on_toolButton_2_clicked()
     qDebug() << query.lastQuery() << query.lastError();
 }
 
-void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageHeight)
+bool MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageHeight)
 {
     /* 1. 获取已经拍照的列表 */
     bool isChecked; // true: 全部打印 false: 只打印56张的倍数
@@ -1205,7 +1237,8 @@ void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
     int imagesCnt;
     QDir dir(imagePath);
     if (!dir.exists()) {
-        return;
+        qDebug() << "directory not exists";
+        return false;
     }
 
     dir.setFilter(QDir::Files| QDir::NoSymLinks);
@@ -1214,7 +1247,7 @@ void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
     dir.setNameFilters(filters);
     imagesCnt = dir.count();
     qInfo() << "imagesCnt=" << imagesCnt;
-    if (imagesCnt <= 0) return;
+    if (imagesCnt <= 0) return false;
 
     isChecked = ui->radioButtonIfPrintToEnd->isChecked();
 
@@ -1238,7 +1271,7 @@ void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
         QString info = QString("现在没有需要打印的文件");
         qInfo() << info;
         QMessageBox::information(this, "", info);
-        return;
+        return false;
     }
 
     if (!isChecked) { // 如果不打印到最后，只是按最优的打印方式
@@ -1247,7 +1280,7 @@ void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
                                    " 当且仅当照片数量大于56时才会打印。").arg(canBePrintCnt);
             qInfo() << info;
             QMessageBox::information(this, "", info);
-            return;
+            return false;
         }
         canBePrintCnt = canBePrintCnt - canBePrintCnt % 56;
     }
@@ -1338,6 +1371,8 @@ void MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
         query.exec(sql);
         qDebug() << sql;
     }
+
+    return true;
 }
 
 static bool portTest(QString ip, int port)
@@ -1427,7 +1462,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         qDebug() << "1 tab";
         break;
     case 2:
-        qDebug() << "2 tab";
+        initPrintPage();
         break;
     case 3:
         qDebug() << "update statics";

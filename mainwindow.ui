@@ -27,7 +27,7 @@
        <enum>QTabWidget::South</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -360,116 +360,151 @@ border-radius:4px;</string>
        <attribute name="title">
         <string>打印</string>
        </attribute>
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>90</y>
-          <width>412</width>
-          <height>181</height>
-         </rect>
-        </property>
-        <property name="title">
-         <string>打印信息导出：</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
-          <widget class="QLabel" name="label_8">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 204, 102);
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string>打印信息导出：</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 204, 102);
 border-radius:4px;</string>
-           </property>
-           <property name="text">
-            <string> 注意：已打印数据不要重复打印，请每次打印20的倍数最佳</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_9">
-           <property name="text">
-            <string>建议每次记录打印的始末，避免重复打印，重复制证，少制证</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
+             </property>
+             <property name="text">
+              <string> 注意：已打印数据不要重复打印，请每次打印20的倍数最佳</string>
+             </property>
+            </widget>
+           </item>
            <item>
-            <widget class="QComboBox" name="comboBox">
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>建议每次记录打印的始末，避免重复打印，重复制证，少制证</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
-              <property name="text">
-               <string>男</string>
-              </property>
+              <widget class="QComboBox" name="comboBox">
+               <item>
+                <property name="text">
+                 <string>男</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>女</string>
+                </property>
+               </item>
+              </widget>
              </item>
              <item>
-              <property name="text">
-               <string>女</string>
-              </property>
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>从第</string>
+               </property>
+              </widget>
              </item>
-            </widget>
+             <item>
+              <widget class="QSpinBox" name="spinBoxFrom">
+               <property name="value">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_7">
+               <property name="text">
+                <string>到</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinBoxTo">
+               <property name="value">
+                <number>20</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>导出打印文件</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>从第</string>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QPushButton" name="pushButton_2">
+               <property name="text">
+                <string>打印现有照片，不会重复打印</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButtonIfPrintToEnd">
+               <property name="text">
+                <string>是否打印到最后</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_7">
+          <property name="title">
+           <string>文件导出记录：</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QTableView" name="tableViewPrintInfo">
+             <property name="sizeAdjustPolicy">
+              <enum>QAbstractScrollArea::AdjustToContents</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinBoxFrom">
-             <property name="value">
-              <number>1</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>到</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBoxTo">
-             <property name="value">
-              <number>20</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton">
-             <property name="text">
-              <string>导出打印文件</string>
+            <widget class="QTableView" name="tableViewPrintImages">
+             <property name="sizeAdjustPolicy">
+              <enum>QAbstractScrollArea::AdjustToContents</enum>
              </property>
             </widget>
            </item>
           </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <item>
-            <widget class="QPushButton" name="pushButton_2">
-             <property name="text">
-              <string>打印现有照片，不会重复打印</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="radioButtonIfPrintToEnd">
-             <property name="text">
-              <string>是否打印到最后</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -521,7 +556,7 @@ border-radius:4px;</string>
          <item row="1" column="0">
           <widget class="QLabel" name="label_15">
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 102, 102);
+            <string notr="true">background-color: rgb(255, 204, 102);
 border-radius:4px;</string>
            </property>
            <property name="text">
@@ -542,7 +577,7 @@ border-radius:4px;</string>
          <item row="3" column="0">
           <widget class="QLabel" name="label_19">
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 102, 102);
+            <string notr="true">background-color: rgb(255, 204, 102);
 border-radius:4px;</string>
            </property>
            <property name="text">
@@ -553,7 +588,7 @@ border-radius:4px;</string>
          <item row="4" column="0">
           <widget class="QLabel" name="label_20">
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 102, 102);
+            <string notr="true">background-color: rgb(255, 204, 102);
 border-radius:4px;</string>
            </property>
            <property name="text">
@@ -574,7 +609,7 @@ border-radius:4px;</string>
          <item row="0" column="0">
           <widget class="QLabel" name="label_14">
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 102, 102);
+            <string notr="true">background-color: rgb(255, 204, 102);
 border-radius:4px;</string>
            </property>
            <property name="text">
@@ -585,7 +620,7 @@ border-radius:4px;</string>
          <item row="2" column="0">
           <widget class="QLabel" name="label_17">
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 102, 102);
+            <string notr="true">background-color: rgb(255, 204, 102);
 border-radius:4px;</string>
            </property>
            <property name="text">

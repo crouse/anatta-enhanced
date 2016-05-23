@@ -7,6 +7,20 @@ CREATE DATABASE IF NOT EXISTS connect;
 GRANT ALL PRIVILEGES ON connect.* to connect@'%' IDENTIFIED BY 'connect';
 FLUSH PRIVILEGES;
 
+CREATE TABLE IF NOT EXISTS `zen_print_info` (
+  `name` varchar(45) NOT NULL COMMENT '管理员姓名',
+  `gender` varchar(10) DEFAULT NULL COMMENT '性别',
+  `start` int(11) NOT NULL COMMENT '打印起始',
+  `end` int(11) NOT NULL COMMENT '打印结束',
+  `signtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录写入时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `zen_print_images` (
+  `name` varchar(45) NOT NULL COMMENT '管理员姓名',
+  `array` text NOT NULL COMMENT '打印的内容',
+  `signtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录写入时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `zen_config` (
   `fahui_name` varchar(45) NOT NULL COMMENT '此次法会名称',
   `last_male_code` int(11) NOT NULL COMMENT '上次皈依男众最大皈依证号，请输入数字',
