@@ -229,7 +229,7 @@ void MainWindow::setModel(QSqlTableModel *mod, QString tableName, QTableView *vi
     mod->setHeaderData(42, Qt::Horizontal, "学佛小组地址");
     mod->setHeaderData(43, Qt::Horizontal, "是否提供学佛场地");
     mod->setHeaderData(44, Qt::Horizontal, "其他信息");
-    mod->setHeaderData(45, Qt::Horizontal, "标记");
+    mod->setHeaderData(45, Qt::Horizontal, "照片标记");
     mod->setHeaderData(46, Qt::Horizontal, "IP地址");
     mod->setHeaderData(47, Qt::Horizontal, "数据来源");
     mod->setHeaderData(48, Qt::Horizontal, "记录写入时间");
@@ -1062,6 +1062,8 @@ void MainWindow::on_pushButton_clicked()
     int to = ui->spinBoxTo->text().toInt();
     qDebug() << gender << gender_index << from << to;
     savePrintPdfs(gender_index, from, to);
+    insertPrintInfo(lineEditEditor->text().trimmed(), gender, from, to);
+    initPrintPage();
 }
 
 void MainWindow::on_pushButtonTruncateTable_clicked()
@@ -1206,6 +1208,7 @@ void MainWindow::on_pushButton_2_clicked()
     qDebug() << imageFilePath;
 
     makePrintedPhotos(imageFilePath, 1050, 1470);
+    initPrintPage();
 }
 
 void MainWindow::on_toolButton_2_clicked()
@@ -1360,17 +1363,25 @@ bool MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
     delete pdfPainter;
     delete pdfWriter;
 
+    QString arrayString = "";
+
     /* 6. 更新数据库，设置已经打印的标记为 2 */
     for(int i = 0; i < canBePrintCnt; i++) {
         QString sql;
         if (fileNameArray[i].startsWith("A")) {
             sql = QString("update zen_male set mark = 2 where receipt = '%1'").arg(fileNameArray[i]);
+            arrayString += fileNameArray[i];
+            arrayString += ",";
         } else {
             sql = QString("update zen_female set mark = 2 where receipt = '%1'").arg(fileNameArray[i]);
+            arrayString += fileNameArray[i];
+            arrayString += ",";
         }
         query.exec(sql);
         qDebug() << sql;
     }
+
+    insertPrintImages(lineEditEditor->text().trimmed(), arrayString);
 
     return true;
 }
@@ -1650,6 +1661,39 @@ void MainWindow::getLocalAddr()
         qDebug() << "getLocalAddr" << lineEditConfig->text().trimmed();
         localAddr = "127.0.0.1";
     }
+}
+
+/*
+CREATE TABLE IF NOT EXISTS `zen_print_info` (
+  `name` varchar(45) NOT NULL COMMENT '管理员姓名',
+  `gender` varchar(10) DEFAULT NULL COMMENT '性别',
+  `start` int(11) NOT NULL COMMENT '打印起始',
+  `end` int(11) NOT NULL COMMENT '打印结束',
+  `signtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录写入时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `zen_print_images` (
+  `name` varchar(45) NOT NULL COMMENT '管理员姓名',
+  `array` text NOT NULL COMMENT '打印的内容',
+  `signtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录写入时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+*/
+
+void MainWindow::insertPrintInfo(QString name, QString gender, int start, int end)
+{
+    QSqlQuery query;
+    QString sql = QString("insert into zen_print_info(name, gender, start, end)  values ('%1', '%2', '%3', '%4')")
+            .arg(name).arg(gender).arg(start).arg(end);
+    query.exec(sql);
+    qDebug() << sql << query.lastError().text();
+}
+
+void MainWindow::insertPrintImages(QString name, QString array)
+{
+    QSqlQuery query;
+    QString sql = QString("insert into zen_print_images (name, array) values ('%1', '%2')").arg(name, array);
+    query.exec(sql);
+    qDebug() << sql << query.lastError().text();
 }
 
 void MainWindow::insertAdminInfo()

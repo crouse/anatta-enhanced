@@ -27,7 +27,7 @@
        <enum>QTabWidget::South</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -456,11 +456,33 @@ border-radius:4px;</string>
              <item>
               <widget class="QRadioButton" name="radioButtonIfPrintToEnd">
                <property name="text">
-                <string>是否打印到最后</string>
+                <string>浪费打印模式</string>
                </property>
               </widget>
              </item>
             </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_25">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 102);
+border-radius:4px;</string>
+             </property>
+             <property name="text">
+              <string>如果某张照片需要重复打印，请在数据栏，把相应皈依信众的</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_26">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 102);
+border-radius:4px;</string>
+             </property>
+             <property name="text">
+              <string>照片标记的值改为 1 即可。它会在下次导出照片时导出。</string>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer">
