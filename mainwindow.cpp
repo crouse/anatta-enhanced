@@ -946,7 +946,7 @@ void MainWindow::setPaths()
     ui->lineEditImagePath->setText(imageFilePath);
 }
 
-void MainWindow::savePrintPdfs(int gender, int from, int to) // gender 0 male, 1 female
+bool MainWindow::savePrintPdfs(int gender, int from, int to) // gender 0 male, 1 female
 {
     QString table;
     if (gender == 0) {
@@ -964,6 +964,12 @@ void MainWindow::savePrintPdfs(int gender, int from, int to) // gender 0 male, 1
 
     QSqlQuery q(sql);
     int cnt = 1;
+    int rowCount = q.size();
+    if (rowCount > (to - from + 1) || rowCount < (to - from + 1) || (to - from + 1) < 0) {
+        qInfo() << "there is not so much info";
+        QMessageBox::information(this, "", "请核对数量后再打印");
+        return false;
+    }
 
     QFile f(filename);
     f.open(QIODevice::WriteOnly);
@@ -1053,6 +1059,8 @@ void MainWindow::savePrintPdfs(int gender, int from, int to) // gender 0 male, 1
     delete painter;
     delete writer;
     f.close();
+
+    return true;
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -1063,9 +1071,11 @@ void MainWindow::on_pushButton_clicked()
     int from = ui->spinBoxFrom->text().toInt();
     int to = ui->spinBoxTo->text().toInt();
     qDebug() << gender << gender_index << from << to;
-    savePrintPdfs(gender_index, from, to);
-    insertPrintInfo(lineEditEditor->text().trimmed(), gender, from, to);
-    initPrintPage();
+    bool stat = savePrintPdfs(gender_index, from, to);
+    if (stat) {
+        insertPrintInfo(lineEditEditor->text().trimmed(), gender, from, to);
+        initPrintPage();
+    }
 }
 
 void MainWindow::on_pushButtonTruncateTable_clicked()

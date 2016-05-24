@@ -50,7 +50,7 @@ public:
     void makePhotos(QString imagePath, QString savePath, int imageWidth, int imageHeight);
     void savePdfs(QString fileName, QSqlTableModel *mod, QString filter);
     bool makePrintedPhotos(QString imagePath, int imageWidth, int imageHeight);
-    void savePrintPdfs(int gender, int from, int to); // 0: male, 1: female
+    bool savePrintPdfs(int gender, int from, int to); // 0: male, 1: female
     void exportExcel(QString fileName, QSqlTableModel *mod);
     void createCard(QString fileName, QSqlTableModel *mod, QString filter, QString pixmapPath);
 
