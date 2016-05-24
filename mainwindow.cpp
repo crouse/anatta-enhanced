@@ -18,10 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     {
         lineEditSearch = new QLineEdit;
-        lineEditSearch->setFixedSize(200, 20);
+        lineEditSearch->setFixedSize(350, 20);
         lineEditSearch->setStyleSheet("border-radius: 5px;");
-        lineEditSearch->setPlaceholderText(" 查询");
+        lineEditSearch->setPlaceholderText(" 查询<ENTER>");
         ui->mainToolBar->addWidget(lineEditSearch);
+        ui->mainToolBar->addSeparator();
     }
 
 
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
         lineEditConfig->setPlaceholderText("服务器地址");
         lineEditConfig->setText(serverIp);
         ui->mainToolBar->addWidget(lineEditConfig);
+        ui->mainToolBar->addSeparator();
     }
 
 
