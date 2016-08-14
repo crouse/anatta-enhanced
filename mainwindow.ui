@@ -27,7 +27,7 @@
        <enum>QTabWidget::South</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -567,6 +567,12 @@ border-radius:4px;</string>
           <layout class="QVBoxLayout" name="verticalLayout_9">
            <item>
             <widget class="QTableView" name="tableViewPrintInfo">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="sizeAdjustPolicy">
               <enum>QAbstractScrollArea::AdjustToContents</enum>
              </property>
@@ -577,6 +583,12 @@ border-radius:4px;</string>
            </item>
            <item>
             <widget class="QTableView" name="tableViewPrintImages">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="sizeAdjustPolicy">
               <enum>QAbstractScrollArea::AdjustToContents</enum>
              </property>

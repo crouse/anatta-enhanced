@@ -868,7 +868,7 @@ void MainWindow::exportAllPdfs()
         savePath = ui->lineEditBackPath->text();
     }
 
-    savePdfs(QString("%1/男众-%2.pdf").arg(saveFilePath).arg(currentDate), model, "");
+    (QString("%1/男众-%2.pdf").arg(saveFilePath).arg(currentDate), model, "");
     savePdfs(QString("%1/女众-%2.pdf").arg(saveFilePath).arg(currentDate), modelFemale, "");
 }
 
@@ -955,6 +955,7 @@ bool MainWindow::savePrintPdfs(int gender, int from, int to) // gender 0 male, 1
         table = "zen_female";
     }
 
+    qDebug() << "saveFilePath" << saveFilePath;
     QString filename = QString("%1/%2__%3-%4.pdf").arg(saveFilePath).arg(table).arg(from).arg(to);
 
     QString sql = QString("select `receipt`, `name`, `gender`, `fname`, `race`, `birthday`, `degree`, `province`, `city`, `district`, `address`, `code` from %1 where id >= '%2' and id <= '%3'")
@@ -1222,7 +1223,7 @@ void MainWindow::on_pushButton_2_clicked()
     foreach(const QString &str, canPrinted) {
         qDebug() << "[" << str << "]";
     }
-    qDebug() << imageFilePath;
+    qDebug() << "imageFilePath" << imageFilePath;
 
     makePrintedPhotos(imageFilePath, 1050, 1470);
     initPrintPage();
@@ -1239,6 +1240,9 @@ void MainWindow::on_toolButton_2_clicked()
     query.exec(sql1);
     query.exec(sql2);
     qDebug() << query.lastQuery() << query.lastError();
+
+    qDebug() << sql1;
+    qDebug() << sql2;
 }
 
 bool MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageHeight)
@@ -1249,8 +1253,12 @@ bool MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
     QSqlQuery query("(select receipt, name from zen_male where mark = 1 order by id) "
                     " union all (select receipt, name from zen_female where mark = 1 order by id)");
 
+    QMap<QString, QString>map;
     while(query.next()) {
-        hasBeenTaken.append(query.value(0).toString());
+        QString r = query.value(0).toString();
+        QString n = query.value(1).toString();
+        hasBeenTaken.append(r);
+        map[r] = n;
     }
 
     /* 2. 获取已经通过 RSYNC 传递过来的图片文件 */
@@ -1314,7 +1322,7 @@ bool MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
     QChar separator = QDir::separator();
     QString savePath = saveFilePath;
     QFont font;
-    font.setPointSize(10);
+    font.setPointSize(8);
     QString fname = QDateTime::currentDateTime().toString("yyyyMMdd-HHmmss");
     QFile pdfFile(savePath + separator + "photo." + fname + ".pdf");
     pdfFile.open(QIODevice::WriteOnly);
@@ -1369,7 +1377,7 @@ bool MainWindow::makePrintedPhotos(QString imagePath, int imageWidth, int imageH
                 if (cnt >= canBePrintCnt) break;
                 QPixmap pixmap(imagePath + separator + fileNameArray[cnt] + ".png");
                 pdfPainter->drawPixmap(points[i][j].rx(), points[i][j].ry(), imageWidth, imageHeight, pixmap);
-                pdfPainter->drawText(QRect(points[i][j].rx(), points[i][j].ry() + imageHeight, 2000, 300), fileNameArray[cnt]);
+                pdfPainter->drawText(QRect(points[i][j].rx(), points[i][j].ry() + imageHeight, 2000, 300), fileNameArray[cnt] + "@" + map[fileNameArray[cnt]]);
                 cnt++;
             }
         }

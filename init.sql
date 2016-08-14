@@ -1,11 +1,19 @@
 CREATE DATABASE IF NOT EXISTS citta;
 GRANT ALL PRIVILEGES ON citta.* to citta@'%' IDENTIFIED BY 'attic';
+GRANT ALL PRIVILEGES ON connect.* to citta@'%' IDENTIFIED BY 'attic';
 FLUSH PRIVILEGES;
 USE citta;
 
 CREATE DATABASE IF NOT EXISTS connect;
 GRANT ALL PRIVILEGES ON connect.* to connect@'%' IDENTIFIED BY 'connect';
 FLUSH PRIVILEGES;
+
+CREATE TABLE IF NOT EXISTS `names` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `gender` varchar(10) NOT NULL COMMENT '性别',
+  `name` varchar(5) NOT NULL COMMENT '名字',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `zen_print_info` (
   `name` varchar(45) NOT NULL COMMENT '管理员姓名',
